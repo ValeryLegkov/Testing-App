@@ -6,7 +6,7 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
-import { Question, Answer } from "@/types/testTypes";
+import { Question, Answer } from "@/shared/types/testTypes";
 
 interface Props {
   question: Question;
@@ -20,12 +20,17 @@ const MultipleChoiceQuestion: React.FC<Props> = ({
   onChange,
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedOptions = answer?.selectedOptions || [];
+    const option = event.target.value;
+    const selectedOptions = answer?.selectedOptions
+      ? [...answer.selectedOptions]
+      : [];
     if (event.target.checked) {
-      selectedOptions.push(event.target.value);
+      selectedOptions.push(option);
     } else {
-      const index = selectedOptions.indexOf(event.target.value);
-      selectedOptions.splice(index, 1);
+      const index = selectedOptions.indexOf(option);
+      if (index > -1) {
+        selectedOptions.splice(index, 1);
+      }
     }
     onChange({ questionId: question.id, selectedOptions });
   };

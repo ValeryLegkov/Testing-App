@@ -1,19 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Typography } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import {
+  SECONDS_IN_MINUTE,
+  MILLISECONDS_IN_ONE_SECOND,
+} from "@/shared/constant/time";
 
-type TimerProps = {
+type UseTimerProps = {
   totalTime: number;
   onTimeUp: () => void;
   reset: boolean;
   isTestFinished: boolean;
 };
 
-const Timer: React.FC<TimerProps> = ({
+export const useTimer = ({
   totalTime,
   onTimeUp,
   reset,
   isTestFinished,
-}) => {
+}: UseTimerProps) => {
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const startTimeRef = useRef<number | null>(null);
   const rafIdRef = useRef<number | null>(null);
@@ -24,8 +27,8 @@ const Timer: React.FC<TimerProps> = ({
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
       }
-      startTimeRef.current = null;
     }
+    startTimeRef.current = null;
   }, [reset, totalTime, isTestFinished]);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const Timer: React.FC<TimerProps> = ({
       }
 
       const elapsedSeconds = Math.floor(
-        (timestamp - startTimeRef.current) / 1000
+        (timestamp - startTimeRef.current) / MILLISECONDS_IN_ONE_SECOND
       );
 
       setTimeLeft(totalTime - elapsedSeconds);
@@ -61,29 +64,13 @@ const Timer: React.FC<TimerProps> = ({
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, [timeLeft, onTimeUp, totalTime, isTestFinished]);
+  }, [totalTime, onTimeUp, isTestFinished, timeLeft]);
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
+    const remainingSeconds = seconds % SECONDS_IN_MINUTE;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-  return (
-    <Typography
-      variant="h6"
-      sx={{
-        marginBottom: "20px",
-        border: "2px solid",
-        padding: "5px",
-        width: "fit-content",
-        opacity: 0.5,
-        fontWeight: "normal",
-      }}
-    >
-      Time Left: {formatTime(timeLeft)}
-    </Typography>
-  );
+  return { timeLeft, formatTime };
 };
-
-export default Timer;

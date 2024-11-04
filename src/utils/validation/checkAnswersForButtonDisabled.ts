@@ -1,4 +1,4 @@
-import { Question, Answer } from "@/types/testTypes";
+import { Question, Answer } from "@/shared/types/testTypes";
 
 export const checkAnswersForButtonDisabled = (
   answers: Answer[],

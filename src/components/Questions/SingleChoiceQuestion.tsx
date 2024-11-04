@@ -6,7 +6,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import { Question, Answer } from "@/types/testTypes";
+import { Question, Answer } from "@/shared/types/testTypes";
 
 interface Props {
   question: Question;

@@ -1,6 +1,6 @@
-import Test from "@/components/Test";
+import KnowledgeTesterApp from "@/components/KnowledgeTesterApp";
 function App() {
-  return <Test />;
+  return <KnowledgeTesterApp />;
 }
 
 export default App;

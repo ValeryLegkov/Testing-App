@@ -1,4 +1,4 @@
-import { Question } from "@/types/testTypes";
+import { Question } from "@/shared/types/testTypes";
 
 export const mockDataQuestions: Question[] = [
   {
